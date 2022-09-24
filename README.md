@@ -12,7 +12,7 @@ Usage:
 - Run particular cmd scripts with admin privileges
 
 Known Errors:
-- KE2209001 - AppxPackage uninstall for all users throws error at the end. After removal from last local user package will be moved automatically to staged status/user ({S-1-5-18 [S-1-5-18]: Staged}), which is not removabe by "Remove-AppxPackage" command. Regardless of error thrown package is being correctly removed for all local users."
+- KE2209001 - AppxPackage uninstall for all users throws error at the end. After removal from last local user, package will be moved automatically to staged status/user ({S-1-5-18 [S-1-5-18]: Staged}), which is not removabe by "Remove-AppxPackage" command. Regardless of error thrown, package is being correctly removed for all local users."
 
 AUTHOR:
 Michal Selma <michal@selma.cc>

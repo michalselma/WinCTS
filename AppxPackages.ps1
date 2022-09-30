@@ -5,8 +5,16 @@
 # Source Code: https://github.com/michalselma/WinCTS
 ########################################
 
+# Check admin rights and if needed relaunch script with admin privileges 
+If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
+	Write-Host "Script requires Administrator rights. Restarting..."
+	Start-Process AppxPackages.cmd -Verb RunAs
+	Exit
+}
+Write-Host "Script is run with Administrator rights. Continuing..."
+
 # Define config file location and name
-$appcfgfile = "$PSScriptRoot\config\appx-w10.conf"
+$appcfgfile = "$PSScriptRoot\config\appx-w10-test.conf"
 
 # Import script modules (functions)
 Import-Module -Name "$PSScriptRoot\AppxPackages.psm1" -ErrorAction Stop

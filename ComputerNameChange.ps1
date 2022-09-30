@@ -5,6 +5,14 @@
 # Source Code: https://github.com/michalselma/WinCTS
 ########################################
 
+# Check admin rights and if needed relaunch script with admin privileges 
+If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
+	Write-Host "Script requires Administrator rights. Restarting..."
+	Start-Process ComputerNameChange.cmd -Verb RunAs
+	Exit
+}
+Write-Host "Script is run with Administrator rights. Continuing..."
+
 $confirmRename = Read-Host "Do you want to change computer name ? (input 'y' or 'yes' and press ENTER to continue)"
 if ((('y', 'yes') -contains $confirmRename)) {
 	$computerName = Read-Host 'Enter New Computer Name'

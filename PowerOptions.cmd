@@ -9,6 +9,6 @@ ECHO ########################################
 REM Set current directory to the directory where file is run from
 cd /d %~dp0
 
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0PowerOptions.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0PowerOptions.ps1" -Verb RunAs
 
 PAUSE

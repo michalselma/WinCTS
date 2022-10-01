@@ -18,15 +18,17 @@ if ((('y', 'yes') -contains $confirmRename)) {
 	$computerName = Read-Host 'Enter New Computer Name'
 	Write-Host "Changing Computer Name to: " $computerName
 	Rename-Computer -NewName $computerName
-	$restart = Read-Host "Computer has been renamed and requires restart. Input 'y' or 'yes' to restart computer now or ENTER to skip"
-	if ((('y', 'yes') -contains $restart)) {
-		Write-Host "Restarting... "
-		Restart-Computer
-	}
-	else {
-		Write-Host "Skipping restart now. To apply changes restart your computer."
-	}
 } 
 else {
 	Write-Host "Undefined key pressed. Skipping Computer Rename."
+}
+
+# Ask to restart computer
+$restart = Read-Host "Computer requires restart to appply changes. Input 'y' or 'yes' to restart computer now or ENTER to skip"
+if ((('y', 'yes') -contains $restart)) {
+	Write-Host "Restarting... "
+	Restart-Computer
+}
+else {
+	Write-Host "Skipping restart now. If any script changes were applied please restart your computer manually."
 }

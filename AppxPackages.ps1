@@ -14,7 +14,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 Write-Host "Script is run with Administrator rights. Continuing..."
 
 # Define config file location and name
-$appcfgfile = "$PSScriptRoot\config\appx-w10-test.conf"
+$appcfgfile = "$PSScriptRoot\config\appx-w10.conf"
 
 # Import script modules (functions)
 Import-Module -Name "$PSScriptRoot\AppxPackages.psm1" -ErrorAction Stop
@@ -72,3 +72,13 @@ $appslistfile = "$PSScriptRoot\log\AppxSnapshot-$datetime-after.list"
 Get-AppxPackage -allusers | Format-Table -Property Name | Out-File -FilePath $appslistfile
 
 Write-Host "Script finished."
+
+# Ask to restart computer
+$restart = Read-Host "Computer requires restart to appply changes. Input 'y' or 'yes' to restart computer now or ENTER to skip"
+if ((('y', 'yes') -contains $restart)) {
+	Write-Host "Restarting... "
+	Restart-Computer
+}
+else {
+	Write-Host "Skipping restart now. If any script changes were applied please restart your computer manually."
+}

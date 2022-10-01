@@ -27,9 +27,9 @@ Function ProcessAppxConfig($cfgpath) {
 	$cfgcontent = $cfgcontent | Where-Object { $_.Substring(0,1) -ne '#'}
 
     # Setting-up each option
-    foreach ($app in $cfgcontent) {
-        # Split each object on '=' and build key & value pairs
-        $app = $app.split("=")
+	foreach ($app in $cfgcontent) {
+		# Split each object on '=' and build key & value pairs
+		$app = $app.split("=")
 		# Remove wihtespaces at beggining and end of each app after split
 		$app = $app.trim()
 		# Build key-value 'pairs' (not necessary - just to keep clear code)

@@ -6,6 +6,7 @@ Functionality:
 - Power Options - modify behavior of power buttons and power saving options. There is separate configuration for Desktop and Laptop computer type.
 - Computer Name Change - modify windows machine/computer name.
 - AppxPackages - uninstall, permanently remove or reinstall Microsoft appx applications/packages for current user, all users or future users.
+- Tweaks - configuration, features and system behaviour settings including hidden elements. Organized into groups like privacy, user interface, updates, applications, hardware etc.
 
 Usage:
 - Review and/or edit content of the config files in config subfolder

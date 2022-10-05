@@ -1,33 +1,33 @@
 ########################################
 # Package: Windows Tweaks Script
 # Type: CMD (Command Line) / PowerShell
-# Platform: Windows 10 / Windows 11
+# Platform: Windows 10
 # Source Code: https://github.com/michalselma/WinCTS
 ########################################
 
 # Check admin rights and if needed relaunch script with admin privileges 
 If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
 	Write-Host "Script requires Administrator rights. Restarting..."
-	Start-Process Tweaks.cmd -Verb RunAs
+	Start-Process Settings.cmd -Verb RunAs
 	Exit
 }
 Write-Host "Script is run with Administrator rights. Continuing..."
 
 # Define config file location and name
-$tweakcfgfile = "$PSScriptRoot\config\tweaks.conf"
+$cfgfile = "$PSScriptRoot\config\settings.conf"
 
 # Import script modules (functions)
-$modules = Get-ChildItem -Recurse "$PSScriptRoot\tweaks\*.psm1" | Select-Object -ExpandProperty FullName
+$modules = Get-ChildItem -Recurse "$PSScriptRoot\settings\*.psm1" | Select-Object -ExpandProperty FullName
 foreach ($module in $modules) {
-	Import-Module -Name $module -ErrorAction Stop
+	Import-Module -Name $module -Verbose -ErrorAction Stop
 }
 
-Write-Host "Processing tweaks configuration file..."
+Write-Host "Processing settings configuration file..."
 # Temporary variable to store config content
 $cfgcontent = @()
 
 # Read Config File
-$cfgcontent = Get-Content $tweakcfgfile -ErrorAction Stop
+$cfgcontent = Get-Content $cfgfile -ErrorAction Stop
 
 # Remove whitespaces at beggining and end of each object
 $cfgcontent = $cfgcontent | ForEach-Object {$_.Trim()}
@@ -39,30 +39,30 @@ $cfgcontent = $cfgcontent | Where-Object {$_}
 $cfgcontent = $cfgcontent | Where-Object { $_.Substring(0,1) -ne '#'}
 
 # Setting-up each option
-foreach ($app in $cfgcontent) {
+foreach ($item in $cfgcontent) {
 	# Split each object on '=' and build key & value pairs
-	$app = $app.split("=")
+	$item = $item.split("=")
 	# Remove wihtespaces at beggining and end of each app after split
-	$app = $app.trim()
+	$item = $item.trim()
 	# Build key-value 'pairs' (not necessary - just to keep clear code)
-	$key=$app[0]
-	$value=$app[1]
+	$key=$item[0]
+	$value=$item[1]
 	
 	# Disable
 	if ($value -eq 0) {
-		$calltweakfunction = "Disable$key"
-		#Write-Host "Executing $calltweakfunction"
-		Invoke-Expression $calltweakfunction
+		$callfunction = "$key-Disable"
+		Write-Host "Executing $callfunction"
+		Invoke-Expression $callfunction
 	}
 	# Enable
 	elseif ($value -eq 1){
-		$calltweakfunction = "Enable$key"
-		#Write-Host "Executing $calltweakfunction"
-		Invoke-Expression $calltweakfunction
+		$callfunction= "$key-Enable"
+		Write-Host "Executing $callfunction"
+		Invoke-Expression $callfunction
 	}
 	# Skip
 	elseif ($value -eq 2){
-		#Write-Host "Skipping $key modification."
+		Write-Host "Skipping $key modification."
 	}
 	# Unknown
 	else {

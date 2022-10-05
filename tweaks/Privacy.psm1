@@ -293,5 +293,17 @@ Function DisableNoRecentDocsHistory {
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoRecentDocsHistory" -ErrorAction SilentlyContinue
 }
 
+#### Remote Assistance (Not applicable to Server (unless Remote Assistance is explicitly installed))
+Function DisableRemoteAssistance {
+	Write-Output "Remote Assistance -> Disable"
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Remote Assistance" -Name "fAllowToGetHelp" -Type DWord -Value 0
+	Get-WindowsCapability -Online | Where-Object { $_.Name -like "App.Support.QuickAssist*" } | Remove-WindowsCapability -Online | Out-Null
+}
+Function EnableRemoteAssistance {
+	Write-Output "Remote Assistance -> Enable"
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Remote Assistance" -Name "fAllowToGetHelp" -Type DWord -Value 1
+	Get-WindowsCapability -Online | Where-Object { $_.Name -like "App.Support.QuickAssist*" } | Add-WindowsCapability -Online | Out-Null
+}
+
 # Export functions
 Export-ModuleMember -Function *

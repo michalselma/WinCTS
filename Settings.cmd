@@ -1,6 +1,6 @@
 @ECHO off
 ECHO ########################################
-ECHO # Package: Windows Tweaks Script
+ECHO # Package: Windows Settings Script
 ECHO # Type: CMD (Command Line) / PowerShell
 ECHO # Platform: Windows 10
 ECHO # Source Code: https://github.com/michalselma/WinCTS

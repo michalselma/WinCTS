@@ -1,5 +1,5 @@
 ########################################
-# Package: Windows Tweaks Script
+# Package: Windows Settings Script
 # Type: CMD (Command Line) / PowerShell
 # Platform: Windows 10
 # Source Code: https://github.com/michalselma/WinCTS

@@ -69,6 +69,9 @@ foreach ($item in $cfgcontent) {
 		Write-Host "*** $key - Incorrect or empty switch (='$value') in config file. Ignoring..."
 	}
 }
+# Restart explorer to apply changes
+taskkill /f /im explorer.exe
+start explorer.exe
 
 Write-Host "Script finished."
 

@@ -5,7 +5,47 @@
 # Source Code: https://github.com/michalselma/WinCTS
 ########################################
 
-#### Small taskbar buttons
+#### File Explorer - Show hidden files and folders
+Function ShowHiddenFilesAndFolders-Disable {
+	Write-Output "Disable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hidden files and folders"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Type DWord -Value 2
+}
+Function ShowHiddenFilesAndFolders-Enable {
+	Write-Output "Enable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hidden files and folders"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Type DWord -Value 1
+}
+
+#### File Explorer - Hide Known file extensions
+Function HideKnownFileExtensions-Disable {
+	Write-Output "Disable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hide extensions for known file types"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Type DWord -Value 0
+}
+Function HideKnownFileExtensions-Enable {
+	Write-Output "Enable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hide extensions for known file types"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Type DWord -Value 1
+}
+
+#### File Explorer - Hide Protected operating system files
+Function HideProtectedSystemFiles-Disable {
+	Write-Output "Disable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hide protected operating system files"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 1
+}
+Function HideProtectedSystemFiles-Enable {
+	Write-Output "Enable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hide protected operating system files"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 0
+}
+
+#### Start - Recently Added Apps
+Function ShowRecentlyAddedApps-Disable {
+	Write-Output "Disable -> [Settings | Personalization] -> Start | Show recently added apps"
+	# *** NOT IMPLEMENTED YET ***
+}
+Function ShowRecentlyAddedApps-Enable {
+	Write-Output "Enable -> [Settings | Personalization] -> Start | Show recently added apps"
+	# *** NOT IMPLEMENTED YET ***
+}
+
+#### Taskbar - Small taskbar buttons
 Function TaskbarSmallIcons-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | Use small taskbar buttons"
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarSmallIcons" -ErrorAction SilentlyContinue
@@ -15,7 +55,7 @@ Function TaskbarSmallIcons-Enable {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarSmallIcons" -Type DWord -Value 1
 }
 
-#### Always Show all icons in taskbar
+#### Taskbar - Always Show all icons in taskbar
 Function ShowAllTrayIcons-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | Notification area | Select which icons appear on the taskbar | Always show all icons in the notification area"
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -ErrorAction SilentlyContinue
@@ -28,7 +68,7 @@ Function ShowAllTrayIcons-Enable {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -Type DWord -Value 0
 }
 
-#### Taskbar People icon
+#### Taskbar - People icon
 Function PeopleIcon-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | People | Show contacts on the taskbar"
 	Write-Output "Disable -> [Taskbar | 'Right Click'] -> Show People on the taskbar"
@@ -43,7 +83,7 @@ Function PeopleIcon-Enable {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -Type DWord -Value 1
 }
 
-#### Taskbar 'Search' Mode
+#### Taskbar - Taskbar 'Search' Mode
 #### 0-none, 1-icon, 2-box (default) (Win11 -> default is no registry key-value = icon) 
 Function TaskbarSearchIcon-Disable {
 	Write-Output "Disable  -> [Taskbar | 'Right Click'] -> Search -> Hidden"
@@ -63,7 +103,7 @@ Function TaskbarSearchBox-Enable {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type DWord -Value 2
 }
 
-#### Task View Button
+#### Taskbar - Task View Button
 Function ShowTaskViewButton-Disable {
 	Write-Output "Disable -> [Taskbar | 'Right Click'] -> ShowTaskViewButton"
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Type DWord -Value 0

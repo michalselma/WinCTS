@@ -24,7 +24,12 @@ Function WebAccessToLangList-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> Windows permisions | General | Let websites provide locally relevant content by accessing my language list"
 	# Set to 0 or Remove to Enable
 	#Set-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut" -Type DWord -Value 0
-	Remove-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut" -ErrorAction SilentlyContinue
+	Try {
+		Remove-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut" -ErrorAction Stop
+	}
+	Catch {
+		Write-Output $_.Exception
+	}
 }
 
 #### General - Track app launches
@@ -137,13 +142,13 @@ Function Notifications-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Notifications | Allow access to user notifications on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\userNotificationListener" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Notifications | Allow apps to access your notifications"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Notifications-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Notifications | Allow access to user notifications on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\userNotificationListener" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Notifications | Allow apps to access your notifications"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Account info
@@ -151,13 +156,13 @@ Function AccountInfo-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Account info | Allow access to account info on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\userAccountInformation" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Account info | Allow apps to access your account info"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function AccountInfo-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Account info | Allow access to account info on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\userAccountInformation" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Account info | Allow apps to access your account info"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Contacts
@@ -165,13 +170,13 @@ Function Contacts-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Contacts | Allow access to contacts on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\contacts" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Contacts | Allow apps to access your contacts"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Contacts-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Contacts | Allow access to contacts on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\contacts" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Contacts | Allow apps to access your contacts"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Calendar
@@ -179,13 +184,13 @@ Function Calendar-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Calendar | Allow access to calendars on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\appointments" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Calendar | Allow apps to access your calendar"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Calendar-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Calendar | Allow access to calendars on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\appointments" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Calendar | Allow apps to access your calendar"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Phone calls
@@ -193,13 +198,13 @@ Function PhoneCalls-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Phone calls | Allow phone calls on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\phoneCall" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Phone calls | Allow apps to make phone calls"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function PhoneCalls-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Phone calls | Allow phone calls on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\phoneCall" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Phone calls | Allow apps to make phone calls"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Call history
@@ -207,13 +212,13 @@ Function CallHistory-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Call history | Allow access to call history on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\phoneCallHistory" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Call history | Allow apps to access your call history"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function CallHistory-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Call history | Allow access to call history on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\phoneCallHistory" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Call history | Allow apps to access your call history"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Email
@@ -221,13 +226,13 @@ Function Email-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Email | Allow access to email on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\email" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Email | Allow apps to access your email"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Email-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Email | Allow access to email on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\email" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Email | Allow apps to access your email"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Tasks
@@ -235,13 +240,13 @@ Function Tasks-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Tasks | Allow access to tasks on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\userDataTasks" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Tasks | Allow apps to access your tasks"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Tasks-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Tasks | Allow access to tasks on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\userDataTasks" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Tasks | Allow apps to access your tasks"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Messaging
@@ -249,13 +254,13 @@ Function Messaging-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Messaging | Allow access to messaging on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\chat" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Messaging | Allow apps to read or send messages"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Messaging-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Messaging | Allow access to messaging on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\chat" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Messaging | Allow apps to read or send messages"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Radios
@@ -263,13 +268,13 @@ Function Radios-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Radios | Allow access to control radios on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\radios" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Radios | Allow apps to control device radios"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Radios-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Radios | Allow access to control radios on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\radios" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Radios | Allow apps to control device radios"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Other devices
@@ -299,13 +304,13 @@ Function AppDiagnostics-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | App diagnostics | Allow access to app diagnostic info on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\appDiagnostics" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | App diagnostics | Allow apps to access diagnostic info about your other apps"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function AppDiagnostics-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | App diagnostics | Allow access to app diagnostic info on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\appDiagnostics" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | App diagnostics | Allow apps to access diagnostic info about your other apps"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Documents
@@ -313,13 +318,13 @@ Function Documents-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Documents | Allow access to document libraries on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\documentsLibrary" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Documents | Allow apps to access your documents library"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Documents-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Documents | Allow access to document libraries on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\documentsLibrary" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Documents | Allow apps to access your documents library"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Pictures
@@ -327,13 +332,13 @@ Function Pictures-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Pictures | Allow access to picture libraries on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\picturesLibrary" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Pictures | Allow apps to access your pictures library"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Pictures-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Pictures | Allow access to picture libraries on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\picturesLibrary" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Pictures | Allow apps to access your pictures library"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Videos
@@ -341,13 +346,13 @@ Function Videos-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Videos | Allow access to video libraries on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\videosLibrary" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | Videos | Allow apps to access your videos library"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function Videos-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Videos | Allow access to video libraries on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\videosLibrary" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | Videos | Allow apps to access your videos library"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### File system
@@ -355,13 +360,13 @@ Function FileSystem-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | File system | Allow access to file system on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\broadFileSystemAccess" -Name "Value" -Value "Deny"
 	Write-Output "Disable -> [Settings | Privacy] -> App permisions | File system | Allow apps to access your file system"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function FileSystem-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | File system | Allow access to file system on this device"
 	Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\broadFileSystemAccess" -Name "Value" -Value "Allow"
 	Write-Output "Enable -> [Settings | Privacy] -> App permisions | File system | Allow apps to access your file system"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 Export-ModuleMember -Function *

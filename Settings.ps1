@@ -16,10 +16,14 @@ Write-Host "Script is run with Administrator rights. Continuing..."
 # Define config file location and name
 $cfgfile = "$PSScriptRoot\config\settings.conf"
 
+# Define log file location and name
+$datetime = Get-Date -Format FileDateTime
+$logfile = "$PSScriptRoot\log\$datetime-settings.log"
+
 # Import script modules (functions)
 $modules = Get-ChildItem -Recurse "$PSScriptRoot\settings\*.psm1" | Select-Object -ExpandProperty FullName
 foreach ($module in $modules) {
-	Import-Module -Name $module -Verbose -ErrorAction Stop
+	Import-Module -Name $module -Verbose -ErrorAction Stop | Out-File -FilePath $logfile -Append
 }
 
 Write-Host "Processing settings configuration file..."
@@ -52,21 +56,21 @@ foreach ($item in $cfgcontent) {
 	if ($value -eq 0) {
 		$callfunction = "$key-Disable"
 		Write-Host "Executing $callfunction"
-		Invoke-Expression $callfunction
+		Invoke-Expression $callfunction | Out-File -FilePath $logfile -Append
 	}
 	# Enable
 	elseif ($value -eq 1){
 		$callfunction= "$key-Enable"
 		Write-Host "Executing $callfunction"
-		Invoke-Expression $callfunction
+		Invoke-Expression $callfunction | Out-File -FilePath $logfile -Append
 	}
 	# Skip
 	elseif ($value -eq 2){
-		Write-Host "Skipping $key modification."
+		Write-Host "Skipping $key modification." | Out-File -FilePath $logfile -Append
 	}
 	# Unknown
 	else {
-		Write-Host "*** $key - Incorrect or empty switch (='$value') in config file. Ignoring..."
+		Write-Host "*** $key - Incorrect or empty switch (='$value') in config file. Ignoring..." | Out-File -FilePath $logfile -Append
 	}
 }
 # Restart explorer to apply changes

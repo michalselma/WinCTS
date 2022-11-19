@@ -8,11 +8,11 @@
 #### Start - Recently Added Apps
 Function ShowRecentlyAddedApps-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Start | Show recently added apps"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function ShowRecentlyAddedApps-Enable {
 	Write-Output "Enable -> [Settings | Personalization] -> Start | Show recently added apps"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Start - Show most used apps
@@ -20,11 +20,11 @@ Function ShowRecentlyAddedApps-Enable {
 # [Settings | Privacy] -> Windows permisions | General | Let Windows track app launches to improve Start and search results
 Function ShowMostUsedApps-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Start | Show most used apps"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 Function ShowMostUsedApps-Enable {
 	Write-Output "Enable -> [Settings | Personalization] -> Start | Show most used apps"
-	# *** NOT IMPLEMENTED YET ***
+	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
 #### Start - Show recently opened items
@@ -49,7 +49,12 @@ Function ShowRecentlyOpenedItems-Enable {
 #### Taskbar - Small taskbar buttons
 Function TaskbarSmallIcons-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | Use small taskbar buttons"
-	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarSmallIcons" -ErrorAction SilentlyContinue
+	Try {
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarSmallIcons" -ErrorAction Stop
+	}
+	Catch {
+		Write-Output $_.Exception
+	}
 }
 Function TaskbarSmallIcons-Enable {
 	Write-Output "Enable -> [Settings | Personalization] -> Taskbar | Use small taskbar buttons"
@@ -59,27 +64,37 @@ Function TaskbarSmallIcons-Enable {
 #### Taskbar - Always Show all icons in taskbar
 Function ShowAllTrayIcons-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | Notification area | Select which icons appear on the taskbar | Always show all icons in the notification area"
-	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -ErrorAction SilentlyContinue
+	Try {	
+		Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -ErrorAction Stop
+	}
+	Catch {
+		Write-Output $_.Exception
+	}
 }
 Function ShowAllTrayIcons-Enable {
 	Write-Output "Enable -> [Settings | Personalization] -> Taskbar | Notification area | Select which icons appear on the taskbar | Always show all icons in the notification area"
 	If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer")) {
-		New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" | Out-Null
+		New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
 	}
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -Type DWord -Value 0
 }
 
 #### Taskbar - People icon
+# Also configurable via [Taskbar | 'Right Click'] -> Show People on the taskbar
 Function PeopleIcon-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | People | Show contacts on the taskbar"
-	Write-Output "Disable -> [Taskbar | 'Right Click'] -> Show People on the taskbar"
-	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -ErrorAction SilentlyContinue
+	Try {
+		Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -ErrorAction Stop
+	}
+	Catch {
+		Write-Output $_.Exception
+	}
 }
 Function PeopleIcon-Enable {
 	Write-Output "Enable -> [Settings | Personalization] -> Taskbar | People | Show contacts on the taskbar"
 	Write-Output "Enable -> [Taskbar | 'Right Click'] -> Show People on the taskbar"
 	If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People")) {
-		New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" | Out-Null
+		New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People"
 	}
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -Type DWord -Value 1
 }
@@ -87,20 +102,20 @@ Function PeopleIcon-Enable {
 #### Taskbar - Taskbar 'Search' Mode
 #### 0-none, 1-icon, 2-box (default) (Win11 -> default is no registry key-value = icon) 
 Function TaskbarSearchIcon-Disable {
-	Write-Output "Disable  -> [Taskbar | 'Right Click'] -> Search -> Hidden"
+	Write-Output "Disable -> [Taskbar | 'Right Click'] -> Search -> Hidden"
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type DWord -Value 0
 }
 Function TaskbarSearchIcon-Enable {
-	Write-Output "Enable  -> [Taskbar | 'Right Click'] -> Search -> Show search Icon (TaskbarSearchBox setting needs to be set to 'Skip')"
+	Write-Output "Enable -> [Taskbar | 'Right Click'] -> Search -> Show search Icon (TaskbarSearchBox setting needs to be set to 'Skip')"
 	Write-Output "Searchbox Taskbar Mode -> Icon (TaskbarSearchBox setting should be set to 'Skip'"
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type DWord -Value 1
 }
 Function TaskbarSearchBox-Disable{
-	Write-Output "Disable  -> [Taskbar | 'Right Click'] -> Search -> Hidden"
+	Write-Output "Disable -> [Taskbar | 'Right Click'] -> Search -> Hidden"
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type DWord -Value 0
 }
 Function TaskbarSearchBox-Enable {
-	Write-Output "Enable  -> [Taskbar | 'Right Click'] -> Search -> Show search box (TaskbarSearchIcon setting needs to be set to 'Skip')"
+	Write-Output "Enable -> [Taskbar | 'Right Click'] -> Search -> Show search box (TaskbarSearchIcon setting needs to be set to 'Skip')"
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type DWord -Value 2
 }
 
@@ -111,7 +126,12 @@ Function ShowTaskViewButton-Disable {
 }
 Function ShowTaskViewButton-Enable {
 	Write-Output "Enable -> [Taskbar | 'Right Click'] -> ShowTaskViewButton"
-	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -ErrorAction SilentlyContinue
+	Try {	
+		Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -ErrorAction Stop
+	}
+	Catch {
+		Write-Output $_.Exception
+	}
 }
 
 Export-ModuleMember -Function *

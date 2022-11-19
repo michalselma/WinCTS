@@ -49,12 +49,7 @@ Function ShowRecentlyOpenedItems-Enable {
 #### Taskbar - Small taskbar buttons
 Function TaskbarSmallIcons-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | Use small taskbar buttons"
-	Try {
-	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarSmallIcons" -ErrorAction Stop
-	}
-	Catch {
-		Write-Output $_.Exception
-	}
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarSmallIcons"
 }
 Function TaskbarSmallIcons-Enable {
 	Write-Output "Enable -> [Settings | Personalization] -> Taskbar | Use small taskbar buttons"
@@ -63,13 +58,8 @@ Function TaskbarSmallIcons-Enable {
 
 #### Taskbar - Always Show all icons in taskbar
 Function ShowAllTrayIcons-Disable {
-	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | Notification area | Select which icons appear on the taskbar | Always show all icons in the notification area"
-	Try {	
-		Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -ErrorAction Stop
-	}
-	Catch {
-		Write-Output $_.Exception
-	}
+	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | Notification area | Select which icons appear on the taskbar | Always show all icons in the notification area"	
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray"
 }
 Function ShowAllTrayIcons-Enable {
 	Write-Output "Enable -> [Settings | Personalization] -> Taskbar | Notification area | Select which icons appear on the taskbar | Always show all icons in the notification area"
@@ -83,12 +73,7 @@ Function ShowAllTrayIcons-Enable {
 # Also configurable via [Taskbar | 'Right Click'] -> Show People on the taskbar
 Function PeopleIcon-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Taskbar | People | Show contacts on the taskbar"
-	Try {
-		Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -ErrorAction Stop
-	}
-	Catch {
-		Write-Output $_.Exception
-	}
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand"
 }
 Function PeopleIcon-Enable {
 	Write-Output "Enable -> [Settings | Personalization] -> Taskbar | People | Show contacts on the taskbar"
@@ -126,12 +111,7 @@ Function ShowTaskViewButton-Disable {
 }
 Function ShowTaskViewButton-Enable {
 	Write-Output "Enable -> [Taskbar | 'Right Click'] -> ShowTaskViewButton"
-	Try {	
-		Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -ErrorAction Stop
-	}
-	Catch {
-		Write-Output $_.Exception
-	}
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton"
 }
 
 Export-ModuleMember -Function *

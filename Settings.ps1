@@ -11,7 +11,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Start-Process Settings.cmd -Verb RunAs
 	Exit
 }
-Write-Host "Script is run with Administrator rights. Continuing..."
+Write-Host "Script is run with Administrator rights."
 
 # Define config file location and name
 $cfgfile = "$PSScriptRoot\config\settings.conf"
@@ -23,7 +23,7 @@ $logfile = "$PSScriptRoot\log\$datetime-settings.log"
 # Import script modules (functions)
 $modules = Get-ChildItem -Recurse "$PSScriptRoot\settings\*.psm1" | Select-Object -ExpandProperty FullName
 foreach ($module in $modules) {
-	Import-Module -Name $module -Verbose -ErrorAction Stop | Out-File -FilePath $logfile -Append
+	Import-Module -Name $module -ErrorAction Stop *>> $logfile
 }
 
 Write-Host "Processing settings configuration file..."
@@ -56,26 +56,29 @@ foreach ($item in $cfgcontent) {
 	if ($value -eq 0) {
 		$callfunction = "$key-Disable"
 		Write-Host "Executing $callfunction"
-		Invoke-Expression $callfunction | Out-File -FilePath $logfile -Append
+		Invoke-Expression $callfunction *>> $logfile
 	}
 	# Enable
 	elseif ($value -eq 1){
 		$callfunction= "$key-Enable"
 		Write-Host "Executing $callfunction"
-		Invoke-Expression $callfunction | Out-File -FilePath $logfile -Append
+		Invoke-Expression $callfunction *>> $logfile
 	}
 	# Skip
 	elseif ($value -eq 2){
-		Write-Host "Skipping $key modification." | Out-File -FilePath $logfile -Append
+		Write-Host "Skipping $key modification." 
+		Write-Host "Skip -> $key" *>> $logfile
 	}
 	# Unknown
 	else {
-		Write-Host "*** $key - Incorrect or empty switch (='$value') in config file. Ignoring..." | Out-File -FilePath $logfile -Append
+		Write-Host "*** $key - Incorrect or empty switch (='$value') in config file. Ignoring..."
+		Write-Host "Error -> Unrecognized configuration switch for $key => '$value'" *>> $logfile
 	}
 }
 # Restart explorer to apply changes
-taskkill /f /im explorer.exe
-start explorer.exe
+Write-Host "Restarting explorer to apply some of changes"
+taskkill /f /im explorer.exe *>> $logfile
+start explorer.exe *>> $logfile
 
 Write-Host "Script finished."
 

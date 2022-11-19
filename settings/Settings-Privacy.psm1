@@ -8,6 +8,9 @@
 #### General - AdvertisingID
 Function AdvertisingID-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> Windows permisions | General | Let apps use advertising ID to make ads more interesting to you based on your app usage"
+	If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo")) {
+		New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo"
+	}
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name "Enabled" -Type DWord -Value 0
 }
 Function AdvertisingID-Enable {
@@ -24,12 +27,7 @@ Function WebAccessToLangList-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> Windows permisions | General | Let websites provide locally relevant content by accessing my language list"
 	# Set to 0 or Remove to Enable
 	#Set-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut" -Type DWord -Value 0
-	Try {
-		Remove-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut" -ErrorAction Stop
-	}
-	Catch {
-		Write-Output $_.Exception
-	}
+	Remove-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut"
 }
 
 #### General - Track app launches

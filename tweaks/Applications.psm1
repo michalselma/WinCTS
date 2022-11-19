@@ -1,6 +1,13 @@
+########################################
+# Package: Windows Tweaks Script
+# Type: CMD (Command Line) / PowerShell
+# Platform: Windows 10
+# Source Code: https://github.com/michalselma/WinCTS
+########################################
+
 #### Cortana
-Function DisableCortana {
-	Write-Output "Cortana -> Disable"
+Function Cortana-Disable {
+	Write-Output "Disable -> Cortana"
 	If (!(Test-Path "HKCU:\Software\Microsoft\Personalization\Settings")) {
 		New-Item -Path "HKCU:\Software\Microsoft\Personalization\Settings" -Force | Out-Null
 	}
@@ -22,8 +29,8 @@ Function DisableCortana {
 	}
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization" -Name "AllowInputPersonalization" -Type DWord -Value 0
 }
-Function EnableCortana {
-	Write-Output "Cortana -> Enable"
+Function Cortana-Enable {
+	Write-Output "Enable -> Cortana"
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Personalization\Settings" -Name "AcceptedPrivacyPolicy" -ErrorAction SilentlyContinue
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitTextCollection" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitInkCollection" -Type DWord -Value 0
@@ -35,26 +42,23 @@ Function EnableCortana {
 }
 
 #### Automatic Maps updates
-Function DisableMapUpdates {
-	Write-Output "Maps automatic updates -> Disable"
+Function MapUpdates-Disable {
+	Write-Output "Disable -> Maps automatic updates"
 	Set-ItemProperty -Path "HKLM:\SYSTEM\Maps" -Name "AutoUpdateEnabled" -Type DWord -Value 0
 }
-Function EnableMapUpdates {
-	Write-Output "Maps automatic updates -> Enable"
+Function MapUpdates-Enable {
+	Write-Output "Enable -> Maps automatic updates"
 	Remove-ItemProperty -Path "HKLM:\SYSTEM\Maps" -Name "AutoUpdateEnabled" -ErrorAction SilentlyContinue
 }
 
 #### OneDrive
-Function DisableOneDrive {
-	Write-Output "OneDrive -> Disable"
-	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive")) {
-		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" | Out-Null
-	}
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Type DWord -Value 1
+Function OneDrive-Disable {
+	Write-Output "Disable -> OneDrive"
+	# *** NOT IMPLEMENTED YET ***
 }
-Function EnableOneDrive {
-	Write-Output "OneDrive -> Enable"
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -ErrorAction SilentlyContinue
+Function OneDrive-Enable {
+	Write-Output "Enable -> OneDrive"
+	# *** NOT IMPLEMENTED YET ***
 }
 
 # Export functions

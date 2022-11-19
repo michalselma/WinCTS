@@ -5,6 +5,50 @@
 # Source Code: https://github.com/michalselma/WinCTS
 ########################################
 
+#### General - AdertisingID
+Function AdertisingID-Disable {
+	Write-Output "Disable -> [Settings | Privacy] -> Windows permisions | General | Let apps use advertising ID to make ads more interesting to you based on your app usage"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name "Enabled" -Type DWord -Value 0
+}
+Function AdertisingID-Enable {
+	Write-Output "Enable -> [Settings | Privacy] -> Windows permisions | General | Let apps use advertising ID to make ads more interesting to you based on your app usage"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name "Enabled" -Type DWord -Value 1
+}
+
+#### General - Website access to language list
+Function WebAccessToLangList-Disable {
+	Write-Output "Disable -> [Settings | Privacy] -> Windows permisions | General | Let websites provide locally relevant content by accessing my language list"
+	Set-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut" -Type DWord -Value 1
+}
+Function WebAccessToLangList-Enable {
+	Write-Output "Enable -> [Settings | Privacy] -> Windows permisions | General | Let websites provide locally relevant content by accessing my language list"
+	# Set to 0 or Remove to Enable
+	#Set-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut" -Type DWord -Value 0
+	Remove-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut" -ErrorAction SilentlyContinue
+}
+
+#### General - Track app launches
+# Enabling this option will "grey out": [Settings | Personalization] -> Start | Show most used apps
+Function LetTrackAppLaunches-Disable {
+	Write-Output "Disable -> [Settings | Privacy] -> Windows permisions | General | Let Windows track app launches to improve Start and search results"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Start_TrackProgs" -Type DWord -Value 0
+}
+Function LetTrackAppLaunches-Enable {
+	Write-Output "Enable -> [Settings | Privacy] -> Windows permisions | General | Let Windows track app launches to improve Start and search results"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Start_TrackProgs" -Type DWord -Value 1
+	# or probably remove this key - to be checked
+}
+
+#### Diagnostics & feedback - Tailored experiences
+Function TailoredExperiences-Disable {
+	Write-Output "Disable -> [Settings | Privacy] -> Windows permisions | Diagnostics & feedback | Tailored experiences"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy" -Name "TailoredExperiencesWithDiagnosticDataEnabled" -Type DWord -Value 0
+}
+Function TailoredExperiences-Enable {
+	Write-Output "Enable -> [Settings | Privacy] -> Windows permisions | Diagnostics & feedback | Tailored experiences"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy" -Name "TailoredExperiencesWithDiagnosticDataEnabled" -Type DWord -Value 1
+}
+
 # TODO: Regs to be checked:
 # [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\activity]
 # [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\bluetooth]
@@ -16,7 +60,6 @@
 # [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\usb]
 # [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\wifiData]
 # [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\wiFiDirect]
-
 
 #### Location
 Function Location-Disable {

@@ -39,36 +39,39 @@ $cfgcontent = $cfgcontent | Where-Object {$_}
 $cfgcontent = $cfgcontent | Where-Object { $_.Substring(0,1) -ne '#'}
 
 # Setting-up each option
-foreach ($app in $cfgcontent) {
+foreach ($item in $cfgcontent) {
 	# Split each object on '=' and build key & value pairs
-	$app = $app.split("=")
+	$item = $item.split("=")
 	# Remove wihtespaces at beggining and end of each app after split
-	$app = $app.trim()
+	$item = $item.trim()
 	# Build key-value 'pairs' (not necessary - just to keep clear code)
-	$key=$app[0]
-	$value=$app[1]
+	$key=$item[0]
+	$value=$item[1]
 	
 	# Disable
 	if ($value -eq 0) {
-		$calltweakfunction = "Disable$key"
-		#Write-Host "Executing $calltweakfunction"
-		Invoke-Expression $calltweakfunction
+		$callfunction = "$key-Disable"
+		Write-Host "Executing $callfunction"
+		Invoke-Expression $callfunction
 	}
 	# Enable
 	elseif ($value -eq 1){
-		$calltweakfunction = "Enable$key"
-		#Write-Host "Executing $calltweakfunction"
-		Invoke-Expression $calltweakfunction
+		$callfunction= "$key-Enable"
+		Write-Host "Executing $callfunction"
+		Invoke-Expression $callfunction
 	}
 	# Skip
 	elseif ($value -eq 2){
-		#Write-Host "Skipping $key modification."
+		Write-Host "Skipping $key modification."
 	}
 	# Unknown
 	else {
 		Write-Host "*** $key - Incorrect or empty switch (='$value') in config file. Ignoring..."
 	}
 }
+# Restart explorer to apply changes
+taskkill /f /im explorer.exe
+start explorer.exe
 
 Write-Host "Script finished."
 

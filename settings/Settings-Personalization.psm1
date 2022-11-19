@@ -5,36 +5,6 @@
 # Source Code: https://github.com/michalselma/WinCTS
 ########################################
 
-#### File Explorer - Show hidden files and folders
-Function ShowHiddenFilesAndFolders-Disable {
-	Write-Output "Disable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hidden files and folders"
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Type DWord -Value 2
-}
-Function ShowHiddenFilesAndFolders-Enable {
-	Write-Output "Enable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hidden files and folders"
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Type DWord -Value 1
-}
-
-#### File Explorer - Hide Known file extensions
-Function HideKnownFileExtensions-Disable {
-	Write-Output "Disable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hide extensions for known file types"
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Type DWord -Value 0
-}
-Function HideKnownFileExtensions-Enable {
-	Write-Output "Enable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hide extensions for known file types"
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Type DWord -Value 1
-}
-
-#### File Explorer - Hide Protected operating system files
-Function HideProtectedSystemFiles-Disable {
-	Write-Output "Disable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hide protected operating system files"
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 1
-}
-Function HideProtectedSystemFiles-Enable {
-	Write-Output "Enable -> [Control Panel | Appearance and Personalization | File Explorer Options] -> View -> Hide protected operating system files"
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 0
-}
-
 #### Start - Recently Added Apps
 Function ShowRecentlyAddedApps-Disable {
 	Write-Output "Disable -> [Settings | Personalization] -> Start | Show recently added apps"
@@ -43,6 +13,37 @@ Function ShowRecentlyAddedApps-Disable {
 Function ShowRecentlyAddedApps-Enable {
 	Write-Output "Enable -> [Settings | Personalization] -> Start | Show recently added apps"
 	# *** NOT IMPLEMENTED YET ***
+}
+
+#### Start - Show most used apps
+# This option can be "grey out" by disabling:
+# [Settings | Privacy] -> Windows permisions | General | Let Windows track app launches to improve Start and search results
+Function ShowMostUsedApps-Disable {
+	Write-Output "Disable -> [Settings | Personalization] -> Start | Show most used apps"
+	# *** NOT IMPLEMENTED YET ***
+}
+Function ShowMostUsedApps-Enable {
+	Write-Output "Enable -> [Settings | Personalization] -> Start | Show most used apps"
+	# *** NOT IMPLEMENTED YET ***
+}
+
+#### Start - Show recently opened items
+# Recent items and frequent places are stored in the folder locations below.
+# %APPDATA%\Microsoft\Windows\Recent Items
+# %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations
+# %APPDATA%\Microsoft\Windows\Recent\CustomDestinations
+#
+# c:\Users\xxxxx\AppData\Roaming\Microsoft\Windows\Recent\
+# c:\Users\xxxxx\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations
+# c:\Users\xxxxx\AppData\Roaming\Microsoft\Windows\Recent\CustomDestinations
+# TO DO: Add cleanup activity of above locations
+Function ShowRecentlyOpenedItems-Disable {
+	Write-Output "Disable -> [Settings | Personalization] -> Start | Show recently opened items in Jump Lists on Start or the taskbar and in File Explorer Quick Access"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Start_TrackDocs" -Type DWord -Value 0
+}
+Function ShowRecentlyOpenedItems-Enable {
+	Write-Output "Enable -> [Settings | Personalization] -> Start | Show recently opened items in Jump Lists on Start or the taskbar and in File Explorer Quick Access"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Start_TrackDocs" -Type DWord -Value 1
 }
 
 #### Taskbar - Small taskbar buttons

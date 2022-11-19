@@ -5,12 +5,12 @@
 # Source Code: https://github.com/michalselma/WinCTS
 ########################################
 
-#### General - AdertisingID
-Function AdertisingID-Disable {
+#### General - AdvertisingID
+Function AdvertisingID-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> Windows permisions | General | Let apps use advertising ID to make ads more interesting to you based on your app usage"
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name "Enabled" -Type DWord -Value 0
 }
-Function AdertisingID-Enable {
+Function AdvertisingID-Enable {
 	Write-Output "Enable -> [Settings | Privacy] -> Windows permisions | General | Let apps use advertising ID to make ads more interesting to you based on your app usage"
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name "Enabled" -Type DWord -Value 1
 }

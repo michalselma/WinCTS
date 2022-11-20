@@ -24,7 +24,7 @@ $logfile = "$PSScriptRoot\log\$datetime-appxpackages-w10.log"
 Import-Module -Name "$PSScriptRoot\AppxPackages.psm1" -ErrorAction Stop *>> $logfile
 
 # Get list of installed applications/packages for reference/comaprision purpose
-Write-Host "[before snapshot] Installed appx packages:" *>> $logfile
+Write-Host "[INFO] Installed appx packages [before snapshot]:" *>> $logfile
 Get-AppxPackage -AllUsers | Format-Table -Property Name *>> $logfile
 
 Write-Host "Starting Applications installation/uninstallation module."
@@ -57,13 +57,13 @@ else {
 	}
 	else {
 		Write-Host "Uninstall/Removal cancelled..." 
-		Write-Host "Uninstall/Removal cancelled..." *>> $logfile
+		Write-Host "[INFO] Uninstall/Removal cancelled..." *>> $logfile
 	}
 }
 
 if (($addapps.length) -eq 0){
 	Write-Host "Nothing awaiting installation."
-	Write-Host "Nothing awaiting installation." *>> $logfile
+	Write-Host "[INFO] Nothing awaiting installation." *>> $logfile
 }
 else {
 	InstallAppx_currentuser($addapps) *>> $logfile
@@ -72,7 +72,7 @@ else {
 Write-Host "Finished Applications installation/uninstallation module."
 
 # Get list of installed applications/packages for reference/comaprision purpose
-Write-Host "[after snapshot] Installed appx packages:" *>> $logfile
+Write-Host "[INFO] Installed appx packages [after snapshot]:" *>> $logfile
 Get-AppxPackage -AllUsers | Format-Table -Property Name *>> $logfile
 
 Write-Host "Script finished."

@@ -67,8 +67,7 @@ Function UninstallAppx_currentuser($removeapps) {
 				Write-Host "[WARN] $app not installed for current user or package not found. Skipping..."
 			}
 			else {
-				Write-Host "[INFO] Uninstalling $app for current user"
-				Write-Host "[INFO] Reinstalltion for current user still will be possible."
+				Write-Host "[INFO] Uninstalling $app for current user. Reinstalltion still will be possible."
 				$PackageFullName = Get-AppxPackage -Name $app | Select-Object -ExpandProperty PackageFullName -First 1 # -First 1 takes first row when more than 1 is returned
 				# Remove for current (admin) user
 				Remove-AppxPackage -Package $PackageFullName #-erroraction silentlycontinue
@@ -93,8 +92,7 @@ Function UninstallAppx_allusers($removeapps) {
 				Write-Host "[WARN] $app not installed for any of users or package not found. Skipping..."
 			}
 			else {
-				Write-Host "[INFO] Uninstalling $app for all users other than current user"
-				Write-Host "[INFO] Reinstalltion for existsing users or installation for new users still will be possible."
+				Write-Host "[INFO] Uninstalling $app for all users other than current user. Reinstalltion for existsing users or installation for new users still will be possible."
 				$PackageFullName = Get-AppxPackage -Name $app -AllUsers | Select-Object -ExpandProperty PackageFullName -First 1 # -First 1 takes first row when more than 1 is returned
 				# Remove for all users except current (admin) user.
 				# Will throw error at the end, as after 

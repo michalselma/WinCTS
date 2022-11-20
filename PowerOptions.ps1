@@ -69,3 +69,5 @@ foreach ($object in $pwrsettings) {
 		Write-Host "Error. Incorrect configuration item: $object"
 	}
 }
+
+Write-Host "Script finished."

@@ -7,7 +7,7 @@
 
 # Build 3 separate add/remove/skip lists from appx config file
 Function ProcessAppxConfig($cfgpath) {
-	Write-Host "Processing appx packages configuration file..."
+	Write-Host "[INFO] Processing appx packages configuration file..."
 	# Temporary variables to build remove/add/skip lists
 	$cfgcontent = @()
 	$add = @()
@@ -45,7 +45,7 @@ Function ProcessAppxConfig($cfgpath) {
 			$skip += $key
 		}
 		else {
-			Write-Host "$key - Incorrect or empty switch in config file. Ignoring..."
+			Write-Host "[ERROR] $key - Incorrect or empty switch in config file. Ignoring..."
 		}
 	}
 	return $remove, $add, $skip
@@ -53,9 +53,9 @@ Function ProcessAppxConfig($cfgpath) {
 
 # Uninstall/Disable Microsoft applications for current user (must be admin)
 Function UninstallAppx_currentuser($removeapps) {
-	Write-Host "Uninstalling Microsoft AppxPackages for current user..."
+	Write-Host "[INFO] Uninstalling Microsoft AppxPackages for current user..."
 	if ($removeapps.length -eq 0){
-		Write-Host "Uninstallation/Removal list is empty. Skipping..."
+		Write-Host "[INFO] Uninstallation/Removal list is empty. Skipping..."
     }
 	else {
 		foreach ($app in $removeapps) {
@@ -64,11 +64,11 @@ Function UninstallAppx_currentuser($removeapps) {
 			# Remove whitespaces
 			$isAppInstalled = $isAppInstalled | ForEach-Object { $_.Trim() }
 			if ($isAppInstalled -ne $app){
-				Write-Host "$app not installed for current user or package not found. Skipping..."
+				Write-Host "[WARN] $app not installed for current user or package not found. Skipping..."
 			}
 			else {
-				Write-Host "Uninstalling $app for current user"
-				Write-Host "Reinstalltion for current user still will be possible."
+				Write-Host "[INFO] Uninstalling $app for current user"
+				Write-Host "[INFO] Reinstalltion for current user still will be possible."
 				$PackageFullName = Get-AppxPackage -Name $app | Select-Object -ExpandProperty PackageFullName -First 1 # -First 1 takes first row when more than 1 is returned
 				# Remove for current (admin) user
 				Remove-AppxPackage -Package $PackageFullName #-erroraction silentlycontinue
@@ -79,9 +79,9 @@ Function UninstallAppx_currentuser($removeapps) {
 
 # Uninstall/Disable Microsoft applications for all users other than current user (must be admin)
 Function UninstallAppx_allusers($removeapps) {
-	Write-Host "Uninstalling Microsoft AppxPackages for all users other than current user..."
+	Write-Host "[INFO] Uninstalling Microsoft AppxPackages for all users other than current user..."
 	if ($removeapps.length -eq 0){
-		Write-Host "Uninstallation/Removal list is empty. Skipping."
+		Write-Host "[INFO] Uninstallation/Removal list is empty. Skipping."
     }
 	else {
 		foreach ($app in $removeapps) {
@@ -90,11 +90,11 @@ Function UninstallAppx_allusers($removeapps) {
 			# Remove whitespaces
 			$isAppInstalled = $isAppInstalled | ForEach-Object { $_.Trim() }
 			if ($isAppInstalled -ne $app){
-				Write-Host "$app not installed for any of users or package not found. Skipping..."
+				Write-Host "[WARN] $app not installed for any of users or package not found. Skipping..."
 			}
 			else {
-				Write-Host "Uninstalling $app for all users other than current user"
-				Write-Host "Reinstalltion for existsing users or installation for new users still will be possible."
+				Write-Host "[INFO] Uninstalling $app for all users other than current user"
+				Write-Host "[INFO] Reinstalltion for existsing users or installation for new users still will be possible."
 				$PackageFullName = Get-AppxPackage -Name $app -AllUsers | Select-Object -ExpandProperty PackageFullName -First 1 # -First 1 takes first row when more than 1 is returned
 				# Remove for all users except current (admin) user.
 				# Will throw error at the end, as after 
@@ -108,9 +108,9 @@ Function UninstallAppx_allusers($removeapps) {
 
 # Remove Microsoft applications permanently from the system
 Function RemoveAppx_SysProvisioned($removeapps) {
-	Write-Host "Removing Microsoft AppxPackages permanently from the system..."
+	Write-Host "[INFO] Removing Microsoft AppxPackages permanently from the system..."
 	if ($removeapps.length -eq 0){
-		Write-Host "Uninstallation/Removal list is empty. Skipping..."
+		Write-Host "[INFO] Uninstallation/Removal list is empty. Skipping..."
     }
 	else {
 		foreach ($app in $removeapps) {
@@ -119,10 +119,10 @@ Function RemoveAppx_SysProvisioned($removeapps) {
 			# Remove whitespaces
 			$isAppProvisioned = $isAppProvisioned | ForEach-Object { $_.Trim() }
 			if ($isAppProvisioned -ne $app){
-				Write-Host "System provisioned package $app not found. Skipping..."		
+				Write-Host "[WARN] System provisioned package $app not found. Skipping..."		
 			}
 			else {
-				Write-Host "Removing $app permanently from the system (System Provisioned Uninstall/Removal)."
+				Write-Host "[INFO] Removing $app permanently from the system (System Provisioned Uninstall/Removal)."
 				# This is permanent removal incl. physical appx files/folders delete from "C:\Program Files\WindowsApps\"
 				# Physical files removal will take place only when app removed for all users.
 				# Even this option is run first and then app is removed for local users, after removal of last user should delete files as well.
@@ -137,9 +137,9 @@ Function RemoveAppx_SysProvisioned($removeapps) {
 
 # Install/Add Microsoft applications for current user
 Function InstallAppx_currentuser($addapps) {
-	Write-Host "Installing Microsoft AppxPackages..."
+	Write-Host "[INFO] Installing Microsoft AppxPackages..."
 	if ($addapps.length -eq 0){
-		Write-Host "Installation list is empty. Skipping..."
+		Write-Host "[INFO] Installation list is empty. Skipping..."
 	}
 	else {
 		foreach ($app in $addapps) {
@@ -151,13 +151,13 @@ Function InstallAppx_currentuser($addapps) {
 			$isAppAvailable = $isAppAvailable | ForEach-Object { $_.Trim() }
 			$isAppInstalled = $isAppInstalled | ForEach-Object { $_.Trim() }
 			if ($isAppAvailable -ne $app) {
-				Write-Host "$app does not exist in the system. Not able to install/activate it for current user."
+				Write-Host "[ERROR] $app does not exist in the system. Not able to install/activate it for current user."
 			}
 			elseif ($isAppInstalled -eq $app) {
-				Write-Host "$app already installed for current user. Skipping..."
+				Write-Host "[WARN] $app already installed for current user. Skipping..."
 			}
 			else {
-				Write-Host "Installing $app for current user"
+				Write-Host "[INFO] Installing $app for current user"
 				Get-AppxPackage -Name $app -AllUsers | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 			}
 		}

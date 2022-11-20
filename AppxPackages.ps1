@@ -14,19 +14,22 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 Write-Host "Script is run with Administrator rights."
 
 # Define config file location and name
-$appcfgfile = "$PSScriptRoot\config\appx-w10.conf"
+$cfgfile = "$PSScriptRoot\config\appxpackages-w10.conf"
+
+# Define log file location and name
+$datetime = Get-Date -Format FileDateTime
+$logfile = "$PSScriptRoot\log\$datetime-appxpackages-w10.log"
 
 # Import script modules (functions)
-Import-Module -Name "$PSScriptRoot\AppxPackages.psm1" -ErrorAction Stop
+Import-Module -Name "$PSScriptRoot\AppxPackages.psm1" -ErrorAction Stop *>> $logfile
 
-Write-Host "Generating currently installed appx apps list: \log\AppxSnapshot-*-before.list"
-$datetime = Get-Date -Format FileDateTime
-$appslistfile = "$PSScriptRoot\log\AppxSnapshot-$datetime-before.list"
-Get-AppxPackage -AllUsers | Format-Table -Property Name | Out-File -FilePath $appslistfile
+# Get list of installed applications/packages for reference/comaprision purpose
+Write-Host "[before snapshot] Installed appx packages:" *>> $logfile
+Get-AppxPackage -AllUsers | Format-Table -Property Name *>> $logfile
 
 Write-Host "Starting Applications installation/uninstallation module."
 
-$removeapps, $addapps, $skipapps = ProcessAppxConfig($appcfgfile)
+$removeapps, $addapps, $skipapps = ProcessAppxConfig($cfgfile)
 Write-Host "Config file:" ($removeapps.length) "items for uninstallation."
 Write-Host "Config file:" ($addapps.length) "items for installation/reinstallation."
 Write-Host "Config file:" ($skipapps.length) "items to be skipped."
@@ -41,35 +44,36 @@ else {
 	Write-Host "3 - Permanent Removal for all existing and future users"
 	$removaloption = Read-Host "Input '1', '2' or '3' to continue or ENTER to cancel)"
 	if ((('1') -contains $removaloption)) {
-		UninstallAppx_currentuser($removeapps)
+		UninstallAppx_currentuser($removeapps) *>> $logfile
 	}
 	elseif ((('2') -contains $removaloption)) {
-		UninstallAppx_currentuser($removeapps)
-		UninstallAppx_allusers($removeapps)
+		UninstallAppx_currentuser($removeapps) *>> $logfile
+		UninstallAppx_allusers($removeapps) *>> $logfile
 	}
 	elseif ((('3') -contains $removaloption)) {
-		UninstallAppx_currentuser($removeapps)
-		UninstallAppx_allusers($removeapps)
-		RemoveAppx_SysProvisioned($removeapps)
+		UninstallAppx_currentuser($removeapps) *>> $logfile
+		UninstallAppx_allusers($removeapps) *>> $logfile
+		RemoveAppx_SysProvisioned($removeapps) *>> $logfile
 	}
 	else {
-		Write-Host "Uninstall/Removal cancelled..."
+		Write-Host "Uninstall/Removal cancelled..." 
+		Write-Host "Uninstall/Removal cancelled..." *>> $logfile
 	}
 }
 
 if (($addapps.length) -eq 0){
 	Write-Host "Nothing awaiting installation."
+	Write-Host "Nothing awaiting installation." *>> $logfile
 }
 else {
-	InstallAppx_currentuser($addapps)
+	InstallAppx_currentuser($addapps) *>> $logfile
 }
 
 Write-Host "Finished Applications installation/uninstallation module."
 
-Write-Host "Generating appx apps that still exist: \log\AppxSnapshot-*-after.list"
-$datetime = Get-Date -Format FileDateTime
-$appslistfile = "$PSScriptRoot\log\AppxSnapshot-$datetime-after.list"
-Get-AppxPackage -allusers | Format-Table -Property Name | Out-File -FilePath $appslistfile
+# Get list of installed applications/packages for reference/comaprision purpose
+Write-Host "[after snapshot] Installed appx packages:" *>> $logfile
+Get-AppxPackage -AllUsers | Format-Table -Property Name *>> $logfile
 
 Write-Host "Script finished."
 

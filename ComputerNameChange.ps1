@@ -11,7 +11,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Start-Process ComputerNameChange.cmd -Verb RunAs
 	Exit
 }
-Write-Host "Script is run with Administrator rights. Continuing..."
+Write-Host "Script is run with Administrator rights."
 
 $confirmRename = Read-Host "Do you want to change computer name ? (input 'y' or 'yes' and press ENTER to continue)"
 if ((('y', 'yes') -contains $confirmRename)) {

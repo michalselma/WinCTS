@@ -11,7 +11,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Start-Process AppxPackages.cmd -Verb RunAs
 	Exit
 }
-Write-Host "Script is run with Administrator rights. Continuing..."
+Write-Host "Script is run with Administrator rights."
 
 # Define config file location and name
 $appcfgfile = "$PSScriptRoot\config\appx-w10.conf"

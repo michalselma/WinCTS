@@ -11,7 +11,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Start-Process Tweaks.cmd -Verb RunAs
 	Exit
 }
-Write-Host "Script is run with Administrator rights. Continuing..."
+Write-Host "Script is run with Administrator rights."
 
 # Define config file location and name
 $tweakcfgfile = "$PSScriptRoot\config\tweaks.conf"

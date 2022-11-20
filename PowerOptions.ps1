@@ -11,7 +11,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Start-Process PowerOptions.cmd -Verb RunAs
 	Exit
 }
-Write-Host "Script is run with Administrator rights. Continuing..."
+Write-Host "Script is run with Administrator rights."
 
 # Get full path/directory of the script that is being run
 $varScriptDir = $PSScriptRoot
@@ -55,14 +55,14 @@ foreach ($object in $pwrsettings) {
 	$type=$object[0]
 	$key=$object[1]
 	$value=$object[2]
-	# Execute Windows CMD 'powercfg.exe' command per key-value type
-	if ($type -eq "std") {
+	# Execute Windows CMD 'powercfg.exe' specific command / option per key-value type ('change' or 'set value index')
+	if ($type -eq "change") {
 		powercfg /x $key $value
 	}
-	elseif($type -eq "idc") {
+	elseif($type -eq "setidx_dc") {
 		powercfg /setdcvalueindex SCHEME_CURRENT SUB_BUTTONS $key $value
 	}
-	elseif($type -eq "iac") {
+	elseif($type -eq "setidx_ac") {
 		powercfg /setacvalueindex SCHEME_CURRENT SUB_BUTTONS $key $value
 	}
 	else {

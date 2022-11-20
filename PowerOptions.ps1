@@ -22,11 +22,11 @@ Write-Host "2 - Laptop"
 $configtype = Read-Host "Input preset value and press Enter"
 if ((('1') -contains $configtype)) {
 	# Config File Location - Desktop
-	$presetpath = "$varScriptDir\config\pwropt-desktop.conf"
+	$presetpath = "$varScriptDir\config\poweroptions-desktop.conf"
 }
 elseif ((('2') -contains $configtype)) {
 	# Config File Location - Laptop
-	$presetpath = "$varScriptDir\config\pwropt-laptop.conf"
+	$presetpath = "$varScriptDir\config\poweroptions-laptop.conf"
 }
 else {
 	Write-Host "Incorrect preset value. Stopping script."

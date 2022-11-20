@@ -14,12 +14,16 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 Write-Host "Script is run with Administrator rights."
 
 # Define config file location and name
-$tweakcfgfile = "$PSScriptRoot\config\tweaks.conf"
+$cfgfile = "$PSScriptRoot\config\tweaks.conf"
+
+# Define log file location and name
+$datetime = Get-Date -Format FileDateTime
+$logfile = "$PSScriptRoot\log\$datetime-tweaks.log"
 
 # Import script modules (functions)
 $modules = Get-ChildItem -Recurse "$PSScriptRoot\tweaks\*.psm1" | Select-Object -ExpandProperty FullName
 foreach ($module in $modules) {
-	Import-Module -Name $module -ErrorAction Stop
+	Import-Module -Name $module -ErrorAction Stop *>> $logfile
 }
 
 Write-Host "Processing tweaks configuration file..."
@@ -27,7 +31,7 @@ Write-Host "Processing tweaks configuration file..."
 $cfgcontent = @()
 
 # Read Config File
-$cfgcontent = Get-Content $tweakcfgfile -ErrorAction Stop
+$cfgcontent = Get-Content $cfgfile -ErrorAction Stop
 
 # Remove whitespaces at beggining and end of each object
 $cfgcontent = $cfgcontent | ForEach-Object {$_.Trim()}
@@ -52,26 +56,29 @@ foreach ($item in $cfgcontent) {
 	if ($value -eq 0) {
 		$callfunction = "$key-Disable"
 		Write-Host "Executing $callfunction"
-		Invoke-Expression $callfunction
+		Invoke-Expression $callfunction *>> $logfile
 	}
 	# Enable
 	elseif ($value -eq 1){
 		$callfunction= "$key-Enable"
 		Write-Host "Executing $callfunction"
-		Invoke-Expression $callfunction
+		Invoke-Expression $callfunction *>> $logfile
 	}
 	# Skip
 	elseif ($value -eq 2){
 		Write-Host "Skipping $key modification."
+		Write-Host "Skip -> $key" *>> $logfile
 	}
 	# Unknown
 	else {
 		Write-Host "*** $key - Incorrect or empty switch (='$value') in config file. Ignoring..."
+		Write-Host "Error -> Unrecognized configuration switch for $key => '$value'" *>> $logfile
 	}
 }
 # Restart explorer to apply changes
-taskkill /f /im explorer.exe
-start explorer.exe
+Write-Host "Restarting explorer to apply changes"
+taskkill /f /im explorer.exe *>> $logfile
+start explorer.exe *>> $logfile
 
 Write-Host "Script finished."
 

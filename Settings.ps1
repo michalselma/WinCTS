@@ -66,7 +66,7 @@ foreach ($item in $cfgcontent) {
 	}
 	# Skip
 	elseif ($value -eq 2){
-		Write-Host "Skipping $key modification." 
+		Write-Host "Skipping $key modification."
 		Write-Host "Skip -> $key" *>> $logfile
 	}
 	# Unknown
@@ -76,7 +76,7 @@ foreach ($item in $cfgcontent) {
 	}
 }
 # Restart explorer to apply changes
-Write-Host "Restarting explorer to apply some of changes"
+Write-Host "Restarting explorer to apply changes"
 taskkill /f /im explorer.exe *>> $logfile
 start explorer.exe *>> $logfile
 

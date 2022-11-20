@@ -42,6 +42,22 @@ Function LetTrackAppLaunches-Enable {
 	# or probably remove this key - to be checked
 }
 
+#### General - Show me suggested content in the Settings app
+# Enabling this option will "grey out": [Settings | Personalization] -> Start | Show most used apps
+Function SuggestedContentInSettings-Disable {
+	Write-Output "Disable -> [Settings | Privacy] -> Windows permisions | General | Show me suggested content in the Settings app"
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338393Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353694Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353696Enabled" -Type DWord -Value 0
+}
+Function SuggestedContentInSettings-Enable {
+	Write-Output "Enable -> [Settings | Privacy] -> Windows permisions | General | Show me suggested content in the Settings app"
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338393Enabled"
+	#Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338393Enabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353694Enabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353696Enabled" -Type DWord -Value 1
+}
+
 #### Diagnostics & feedback - Tailored experiences
 Function TailoredExperiences-Disable {
 	Write-Output "Disable -> [Settings | Privacy] -> Windows permisions | Diagnostics & feedback | Tailored experiences"

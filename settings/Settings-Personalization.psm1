@@ -27,6 +27,22 @@ Function ShowMostUsedApps-Enable {
 	Write-Output "*** NOT IMPLEMENTED YET ***"
 }
 
+#### Start - Show suggestions occasionally in Start
+# This option can be "grey out" by disabling:
+# [Settings | Privacy] -> Windows permisions | General | Let Windows track app launches to improve Start and search results
+Function ShowAppsSuggestionsInStart-Disable {
+	Write-Output "Disable -> [Settings | Personalization] -> Start | Show suggestions occasionally in Start"
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 0
+	# SystemPaneSuggestionsEnabled was up to be changed with SubscribedContent-338388Enabled
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 0
+}
+Function ShowAppsSuggestionsInStart-Enable {
+	Write-Output "Enable -> [Settings | Personalization] -> Start | Show suggestions occasionally in Start"
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 1
+	# SystemPaneSuggestionsEnabled was up to be changed with SubscribedContent-338388Enabled
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 1
+}
+
 #### Start - Show recently opened items
 # Recent items and frequent places are stored in the folder locations below.
 # %APPDATA%\Microsoft\Windows\Recent Items

@@ -5,6 +5,19 @@
 # Source Code: https://github.com/michalselma/WinCTS
 ########################################
 
+#### Notifications & actions - suggestions at startup
+Function AppSuggestionsGetEvenMoreOutOfWindows-Disable {
+	Write-Output "Disable -> [Settings | System | Notifications & actions] -> Notifications -> Suggest ways I can finish setting up my device to get the most out of Windows"
+	If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement")) {
+		New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Force
+	}
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Name "ScoobeSystemSettingEnabled" -Type DWord -Value 0
+}
+Function AppSuggestionsGetEvenMoreOutOfWindows-Enable {
+	Write-Output "Enable -> [Settings | System | Notifications & actions] -> Notifications -> Suggest ways I can finish setting up my device to get the most out of Windows"
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Name "ScoobeSystemSettingEnabled"
+}
+
 #### Advanced System Settings - Remote assistance
 # 'Get-WindowsCapability -Online' command is addon that removes Quick Assist application
 Function RemoteAssistance-Disable {

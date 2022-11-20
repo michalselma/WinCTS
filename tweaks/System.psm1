@@ -16,7 +16,7 @@ Function UWPSwapFile-Disable {
 }
 Function UWPSwapFile-Enable {
 	Write-Output "Enable -> Advanced System Settings -> Performence -> Advanced -> Virtual Memory -> swapfile.sys"
-	Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name "SwapfileControl" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name "SwapfileControl"
 }
 
 # Export functions

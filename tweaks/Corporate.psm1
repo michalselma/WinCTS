@@ -26,8 +26,8 @@
 #### Windows Update Group Policy control
 Function WUPolicyControl-Disable {
 	Write-Output "Disable -> Windows Update Group Policy control"
-	Remove-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Recurse -ErrorAction SilentlyContinue
-	Remove-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Recurse -ErrorAction SilentlyContinue
+	Remove-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Recurse
+	Remove-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Recurse
 }
 Function WUPolicyControl-Enable {
 	Write-Output "Enable -> Windows Update Group Policy control"

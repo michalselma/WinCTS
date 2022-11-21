@@ -26,14 +26,14 @@ Function AppSuggestions-Disable {
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\Subscriptions" -Recurse
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SuggestedApps" -Recurse
 	# Empty placeholder tile collection in registry cache and restart Start Menu process to reload the cache
-	# Windows Start remove Dynamic Layouts needs to be done - unpinning maybe ?
+	# Windows Start - remove Dynamic Layouts needs to be done
 	If ([System.Environment]::OSVersion.Version.Build -ge 17134) {
 		$key = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.placeholdertilecollection\Current"
 		Set-ItemProperty -Path $key.PSPath -Name "Data" -Type Binary -Value $key.Data[0..15]
 		# ShellExperienceHost not found - To be checked on clean installation
 		Stop-Process -Name "ShellExperienceHost" -Force
 	}
-	# Below resetes cache of Start menu tiles, but probably unpinning needed
+	# Below resetes cache of Start menu tiles
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ImmersiveShell\StateStore" -Name "ResetCache" -Type DWord -Value 1
 	# Suggested Apps in Windows Ink Workspace probably gets active when Windows Ink becomes installed
 	# (Settings | Devices | Pen & Windows Ink -> Windows Ink Workspace -> Show recommended app suggestions)
@@ -76,6 +76,9 @@ Function SilentInstalledApps-Enable {
 # To check if this can be configured different way than policy set-up
 Function ActivityHistory-Disable {
 	Write-Output "Disable -> Activity History"
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Force
+	}
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "EnableActivityFeed" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "PublishUserActivities" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "UploadUserActivities" -Type DWord -Value 0

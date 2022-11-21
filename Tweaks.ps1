@@ -76,11 +76,11 @@ foreach ($item in $cfgcontent) {
 	}
 }
 # Restart explorer to apply changes
-Write-Host "Restarting explorer to apply changes"
+Write-Host "[INFO] Restarting explorer to apply changes" *>> $logfile
 taskkill /f /im explorer.exe *>> $logfile
 start explorer.exe *>> $logfile
 
-Write-Host "Script finished."
+Write-Host "[INFO] Script finished." *>> $logfile
 
 # Ask to restart computer
 $restart = Read-Host "Computer requires restart to appply changes. Input 'y' or 'yes' to restart computer now or ENTER to skip"

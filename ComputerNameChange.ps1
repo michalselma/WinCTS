@@ -3,8 +3,9 @@
 # Type: CMD (Command Line) / PowerShell
 # Platform: Windows 11
 # Source Code: https://github.com/michalselma/WinCTS
-# File Date: 2023-04-15
+# File Date: 2023-04-21
 ####################################################
+
 
 # Check admin rights and if needed relaunch script with admin privileges 
 If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
@@ -14,22 +15,33 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 }
 Write-Host "Script is run with Administrator rights."
 
+
+# Get current computer name
+$computerName = hostname
+Write-Host "Current Computer Name: $computerName"
+
+
+# Start rename
 $confirmRename = Read-Host "Do you want to change computer name ? (input 'y' or 'yes' and press ENTER to continue)"
+
 if ((('y', 'yes') -contains $confirmRename)) {
-	$computerName = Read-Host 'Enter New Computer Name'
-	Write-Host "Changing Computer Name to: " $computerName
-	Rename-Computer -NewName $computerName
+	$newComputerName = Read-Host 'Enter New Computer Name'
+	Write-Host "Changing Computer Name to: $newComputerName"
+	Rename-Computer -NewName $newComputerName
+
+	# Ask to restart computer
+	$restart = Read-Host "Computer requires restart to appply changes. Input 'y' or 'yes' to restart computer now or ENTER to skip"
+	if ((('y', 'yes') -contains $restart)) {
+		Write-Host "Restarting... "
+		Restart-Computer
+	}
+
+	else {
+		Write-Host "Skipping restart now. If any script changes were applied please restart your computer manually."
+	}
 } 
+
 else {
-	Write-Host "Undefined key pressed. Skipping Computer Rename..."
+	Write-Host "Undefined key pressed. Skipping..."
 }
 
-# Ask to restart computer
-$restart = Read-Host "Computer requires restart to appply changes. Input 'y' or 'yes' to restart computer now or ENTER to skip"
-if ((('y', 'yes') -contains $restart)) {
-	Write-Host "Restarting... "
-	Restart-Computer
-}
-else {
-	Write-Host "Skipping restart now. If any script changes were applied please restart your computer manually."
-}

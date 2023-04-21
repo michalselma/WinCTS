@@ -3,81 +3,88 @@
 # Type: CMD (Command Line) / PowerShell
 # Platform: Windows 11
 # Source Code: https://github.com/michalselma/WinCTS
-# File Date: 2023-04-15
+# File Date: 2023-04-21
 ####################################################
 
-# Check admin rights and if needed relaunch script with admin privileges 
+
+### Check admin rights and if needed relaunch script with admin privileges 
 If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
-	Write-Host "Script requires Administrator rights. Restarting..."
+	Write-Host "[WARNING] Script requires Administrator rights. Restarting..."
 	Start-Process PowerOptions.cmd -Verb RunAs
 	Exit
 }
-Write-Host "Script is run with Administrator rights."
+Write-Host "[INFO] Script is run with Administrator rights." 
 
-# Get full path/directory of the script that is being run
-$varScriptDir = $PSScriptRoot
 
+# Define log file location and name
+$logfile = "$PSScriptRoot\log\poweroptions.log"
+
+$datetime = Get-Date -Format "dddd, yyyy-MM-dd HH:mm:ss.fff K"
+Write-Output "[START] $datetime" *>> $logfile
+
+
+#  Get configuration file path
+$presetpath = "$PSScriptRoot\config\poweroptions.json"
+
+
+# Read Config File
+$json = Get-Content -Raw $presetpath -ErrorAction Stop | ConvertFrom-Json
+
+
+# Get config choise from user
 Write-Host "Choose power options preset type"
 Write-Host "1 - Desktop"
 Write-Host "2 - Laptop"
 $configtype = Read-Host "Input preset value and press Enter"
+
 if ((('1') -contains $configtype)) {
-	# Config File Location - Desktop
-	$presetpath = "$varScriptDir\config\poweroptions-desktop.conf"
+	$option = 'desktop'	
 }
 elseif ((('2') -contains $configtype)) {
-	# Config File Location - Laptop
-	$presetpath = "$varScriptDir\config\poweroptions-laptop.conf"
+	$option = 'laptop'	
 }
 else {
-	Write-Host "Incorrect or missing preset value. Stopping script."
+	Write-Output "[ERROR] Incorrect option. Stopping script." | Tee-Object -FilePath $logfile -Append
 	Exit
 }
 
-# Read Config File
-$pwrsettings = Get-Content $presetpath -ErrorAction Stop
 
-# Remove whitespaces at beggining and end of each object
-$pwrsettings = $pwrsettings | ForEach-Object {$_.Trim()}
+# Setting-up power options for chosen preset
+foreach ($object in $json) {
+	$id = $object.id
 
-# Remove Empty lines/objects
-$pwrsettings = $pwrsettings | Where-Object {$_}
+	# If chosen preset (desktop/laptop) is defined in configuration for object start processing
+	if (($object.option -contains $option)) {
+		Write-Output "[INFO ] Processing $id" | Tee-Object -FilePath $logfile -Append
 
-# Remove comment lines from config file
-$pwrsettings = $pwrsettings | Where-Object { $_.Substring(0,1) -ne '#'}
+		$type=$object.type
+		$key=$object.key
+		$value=$object.value
 
-# Setting-up each option
-foreach ($object in $pwrsettings) {
-	# Split each object on '.' (config type) and '=' (key & value)
-	$object = $object.split(".").split("=")
-	# Remove wihtespaces at beggining and end of each (sub)object after split
-	$object = $object.trim()
-	# Build type-key-value 'pairs' (not necessary to assign to new vars, but just to keep clear code)
-	$type=$object[0]
-	$key=$object[1]
-	$value=$object[2]
-	# Execute Windows CMD 'powercfg.exe' specific command / option per key-value type (change, set value index for SUB_BUTTON / SUB_BATTERY or other command )
-	if ($type -eq "CHANGE") {
-		powercfg /change $key $value
+		# Execute Windows 'powercfg.exe' with specific switch (type) and/or key-value data
+		if ($type -eq "change") {
+			powercfg /change $key $value
+		}
+		elseif ($type -eq "setdcvalueindex") {
+			powercfg /setdcvalueindex SCHEME_CURRENT SUB_BUTTONS $key $value
+		}
+		elseif ($type -eq "setacvalueindex") {
+			powercfg /setacvalueindex SCHEME_CURRENT SUB_BUTTONS $key $value
+		}
+		elseif ($type -eq "other") {
+			powercfg /$key $value
+		} 
+		else {
+			Write-Output "[ERROR] Incorrect configuration type $type for id $id" | Tee-Object -FilePath $logfile -Append
+		}
 	}
-	elseif($type -eq "SBUTTON_setDC") {
-		powercfg /setdcvalueindex SCHEME_CURRENT SUB_BUTTONS $key $value
-	}
-	elseif($type -eq "SBUTTON_setAC") {
-		powercfg /setacvalueindex SCHEME_CURRENT SUB_BUTTONS $key $value
-	}
-	elseif($type -eq "SBATTERY_setDC") {
-		powercfg /setdcvalueindex SCHEME_CURRENT SUB_BATTERY $key $value
-	}
-	elseif($type -eq "SBATTERY_setAC") {
-		powercfg /setacvalueindex SCHEME_CURRENT SUB_BATTERY $key $value
-	}
-	elseif($type -eq "OTHER") {
-		powercfg /$key $value
-	}
+
 	else {
-		Write-Host "Error. Incorrect configuration item: $object"
-	}
+		Write-Output "[INFO ] Skipping $id" *>> $logfile
+	}		
 }
 
-Write-Host "Script finished."
+
+$datetime = Get-Date -Format "dddd, yyyy-MM-dd HH:mm:ss.fff K"
+Write-Output "[END  ] $datetime" *>> $logfile
+Write-Output "[#####]" *>> $logfile

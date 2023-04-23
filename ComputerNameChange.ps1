@@ -3,7 +3,7 @@
 # Type: CMD (Command Line) / PowerShell
 # Platform: Windows 11
 # Source Code: https://github.com/michalselma/WinCTS
-# File Date: 2023-04-21
+# File Date: 2023-04-23
 ####################################################
 
 
@@ -16,9 +16,16 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 Write-Host "Script is run with Administrator rights."
 
 
+# Define log file location and name
+$logfile = "$PSScriptRoot\log\computername.log"
+
+$datetime = Get-Date -Format "dddd, yyyy-MM-dd HH:mm:ss.fff K"
+Write-Output "[START] $datetime" *>> $logfile
+
+
 # Get current computer name
 $computerName = hostname
-Write-Host "Current Computer Name: $computerName"
+Write-Output "Current Computer Name: $computerName" | Tee-Object -FilePath $logfile -Append
 
 
 # Start rename
@@ -26,22 +33,26 @@ $confirmRename = Read-Host "Do you want to change computer name ? (input 'y' or 
 
 if ((('y', 'yes') -contains $confirmRename)) {
 	$newComputerName = Read-Host 'Enter New Computer Name'
-	Write-Host "Changing Computer Name to: $newComputerName"
+	Write-Output "Changing Computer Name to: $newComputerName" | Tee-Object -FilePath $logfile -Append
 	Rename-Computer -NewName $newComputerName
 
 	# Ask to restart computer
 	$restart = Read-Host "Computer requires restart to appply changes. Input 'y' or 'yes' to restart computer now or ENTER to skip"
 	if ((('y', 'yes') -contains $restart)) {
-		Write-Host "Restarting... "
+		Write-Output "Restarting... " | Tee-Object -FilePath $logfile -Append
 		Restart-Computer
 	}
 
 	else {
-		Write-Host "Skipping restart now. If any script changes were applied please restart your computer manually."
+		Write-Output "Skipping computer restart now. Please restart your computer later." | Tee-Object -FilePath $logfile -Append
 	}
 } 
 
 else {
-	Write-Host "Undefined key pressed. Skipping..."
+	Write-Output "Undefined key pressed. Skipping..." | Tee-Object -FilePath $logfile -Append
 }
 
+
+$datetime = Get-Date -Format "dddd, yyyy-MM-dd HH:mm:ss.fff K"
+Write-Output "[END  ] $datetime" *>> $logfile
+Write-Output "[#####]" *>> $logfile

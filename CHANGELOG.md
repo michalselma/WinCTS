@@ -1,6 +1,11 @@
 # CHANGELOG
 
 
+## 0.2.2
+* logging added to computer change module
+* cosmetic changes
+
+
 ## 0.2.1
 * flat file configs replaced with json config type
 * logging to file introduced

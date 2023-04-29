@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.3
+* rebuild power options module
+* split power options json config to configuration and dictionary files
+* cosmetic changes to computer rename module
+
 
 ## 0.2.2
 * logging added to computer change module

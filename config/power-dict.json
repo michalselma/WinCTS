@@ -1,0 +1,97 @@
+{
+	"monitor_ac": {
+		"name": "Turn off the display - Plugged in",
+		"description": "Time in minutes or 0=Never",
+		"option": ["laptop", "desktop"]
+	},
+	"monitor_dc": {
+		"name": "Turn off the display - On Battery",
+		"description": "Time in minutes or 0=Never",
+		"option": ["laptop"]
+	},
+	"disk_ac": {
+		"name": "Turn off hard drive - Plugged in",
+		"description": "Time in minutes or 0=Never",
+		"option": ["laptop", "desktop"]
+	},
+	"disk_dc": {
+		"name": "Turn off hard drive - On Battery",
+		"description": "Time in minutes or 0=Never",
+		"option": ["laptop"]
+	},
+	"standby_ac": {
+		"name": "Put the computer to sleep - Plugged in",
+		"description": "Time in minutes or 0=Never",
+		"option": ["laptop", "desktop"]
+	},
+	"standby_dc": {
+		"name": "Put the computer to sleep - On Battery",
+		"description": "Time in minutes or 0=Never",
+		"option": ["laptop"]
+	},
+	"hibernate_ac": {
+		"name": "Hibernate computer - Plugged in",
+		"description": "Time in minutes or 0=Never",
+		"option": ["laptop", "desktop"]
+	},
+	"hibernate_dc": {
+		"name": "Hibernate computer - On Battery",
+		"description": "Time in minutes or 0=Never",
+		"option": ["laptop"]
+	},
+	"lid_open_ac": {
+		"name": "Lid open wake action - Plugged in",
+		"description": "0=Do Nothing, 1=Turn on the display",
+		"option": ["laptop", "desktop"]
+	},
+	"lid_open_dc": {
+		"name": "Lid open wake action - On Battery",
+		"description": "0=Do Nothing, 1=Turn on the display",
+		"option": ["laptop"]
+	},
+	"lid_close_ac": {
+		"name": "Lid switch close action - Plugged in",
+		"description": "0=Do Nothing, 1=Sleep, 2=Hibernate, 3=ShutDown",
+		"option": ["laptop", "desktop"]
+	},
+	"lid_close_dc": {
+		"name": "Lid switch close action - On Battery",
+		"description": "0=Do Nothing, 1=Sleep, 2=Hibernate, 3=ShutDown",
+		"option": ["laptop"]
+	},
+	"pwr_button_ac": {
+		"name": "Power button action - Plugged in",
+		"description": "0=Do Nothing, 1=Sleep, 2=Hibernate, 3=ShutDown",
+		"option": ["laptop", "desktop"]
+	},
+	"pwr_button_dc": {
+		"name": "Power button action - On Battery",
+		"description": "0=Do Nothing, 1=Sleep, 2=Hibernate, 3=ShutDown",
+		"option": ["laptop"]
+	},
+	"pwr_force_shutdown_ac": {
+		"name": "Power button forced shutdown - Plugged in",
+		"description": "0=Off, 1=On",
+		"option": ["laptop", "desktop"]
+	},
+	"pwr_force_shutdown_dc": {
+		"name": "Power button forced shutdown - On Battery",
+		"description": "0=Off, 1=On",
+		"option": ["laptop"]
+	},
+	"sleep_button_ac": {
+		"name": "Sleep button action - Plugged in",
+		"description": "0=Do Nothing, 1=Sleep, 2=Hibernate, 3=ShutDown",
+		"option": ["laptop", "desktop"]
+	},
+	"sleep_button_dc": {
+		"name": "Sleep button action - On Battery",
+		"description": "0=Do Nothing, 1=Sleep, 2=Hibernate, 3=ShutDown",
+		"option": ["laptop"]
+	},
+	"hibernation": {
+		"name": "Hibernation",
+		"description": "on=Turn On, off=Turn Off",
+		"option": ["laptop", "desktop"]
+	}
+}

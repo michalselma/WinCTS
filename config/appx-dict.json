@@ -1,0 +1,11 @@
+{
+	"Microsoft.WindowsAlarms": {
+		"name": "Alarms & Clock",
+		"description": "Time management app with five key features: alarms, world clocks, timers, stopwatch and focus sessions. Can integrate with Notification area and sidebar. Sometimes can be handy",
+		"UIremovable": "yes",
+		"PSremovable": "yes",
+		"ProvisionedPackage": "yes",
+		"options": ["add", "remove", "skip"],
+		"severity": "safe"
+	}
+}

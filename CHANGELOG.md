@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.4
+* AppxPackages module added
+
+
 ## 0.3
 * rebuild power options module
 * split power options json config to configuration and dictionary files

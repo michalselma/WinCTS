@@ -3,7 +3,7 @@
 # Type: CMD (Command Line) / PowerShell
 # Platform: Windows 11
 # Source Code: https://github.com/michalselma/WinCTS
-# File Date: 2023-04-29
+# File Date: 2023-05-23
 ####################################################
 
 
@@ -37,7 +37,7 @@ $presetpath = "$PSScriptRoot\config\power-dict.json"
 $json_dict = Get-Content -Raw $presetpath -ErrorAction Stop | ConvertFrom-Json
 
 
-# Get config choise from user
+# Get config choice from user
 Write-Host "Choose power options preset type"
 Write-Host "1 - Desktop"
 Write-Host "2 - Laptop"

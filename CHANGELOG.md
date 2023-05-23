@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.4.1
+* Appx configuration profiles added
+* readme file fixed
+
+
 ## 0.4
 * AppxPackages module added
 

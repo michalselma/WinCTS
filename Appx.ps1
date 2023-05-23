@@ -3,7 +3,7 @@
 # Type: CMD (Command Line) / PowerShell
 # Platform: Windows 11
 # Source Code: https://github.com/michalselma/WinCTS
-# File Date: 2023-05-10
+# File Date: 2023-05-23
 ####################################################
 
 
@@ -23,8 +23,39 @@ $datetime = Get-Date -Format "dddd, yyyy-MM-dd HH:mm:ss.fff K"
 Write-Output "[START] $datetime" *>> $logfile
 
 
-# Get configuration file path
-$presetpath = "$PSScriptRoot\config\appx.json"
+# Get config choice from user
+Write-Host "Choose removal profile:"
+Write-Host "1 - Default (Home, but no or limited plugins, xbox, bing or ms apps)"
+Write-Host "2 - Home"
+Write-Host "3 - Work"
+Write-Host "4 - Minimal"
+$configtype = Read-Host "Input preset value and press Enter"
+
+if ((('1') -contains $configtype)) {
+	Write-Output "Processing preset type: Default" | Tee-Object -FilePath $logfile -Append
+	# Configuration file path
+	$presetpath = "$PSScriptRoot\config\appx.json"
+}
+elseif ((('2') -contains $configtype)) {
+	Write-Output "Processing preset type: Home" | Tee-Object -FilePath $logfile -Append
+	# Configuration file path
+	$presetpath = "$PSScriptRoot\config\appx_home.json"
+}
+elseif ((('3') -contains $configtype)) {
+	Write-Output "Processing preset type: Work" | Tee-Object -FilePath $logfile -Append
+	# Configuration file path
+	$presetpath = "$PSScriptRoot\config\appx_work.json"
+}
+elseif ((('4') -contains $configtype)) {
+	Write-Output "Processing preset type: Minimal" | Tee-Object -FilePath $logfile -Append
+	# Configuration file path
+	$presetpath = "$PSScriptRoot\config\appx_min.json"
+}
+else {
+	Write-Output "[INFO] Incorrect option. Stopping script." | Tee-Object -FilePath $logfile -Append
+	Exit
+}
+
 
 # Read configuration file
 $json_config = Get-Content -Raw $presetpath -ErrorAction Stop | ConvertFrom-Json
